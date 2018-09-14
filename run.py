@@ -2,7 +2,7 @@ import argparse
 import logging
 import sys
 import time
-
+import os
 from tf_pose import common
 import cv2
 import numpy as np
@@ -19,6 +19,7 @@ logger.addHandler(ch)
 
 
 if __name__ == '__main__':
+   # os.chdir('..')
     parser = argparse.ArgumentParser(description='tf-pose-estimation run')
     parser.add_argument('--image', type=str, default='./images/p1.jpg')
     parser.add_argument('--model', type=str, default='cmu', help='cmu / mobilenet_thin')
