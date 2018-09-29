@@ -378,10 +378,17 @@ class TfPoseEstimator:
         return npimg_q
 
     @staticmethod
-    def draw_humans(npimg, humans, imgcopy=False):
-        if imgcopy:
-            npimg = np.copy(npimg)
-        image_h, image_w = npimg.shape[:2]
+    def draw_humans(npimg, humans, imgcopy=False,bgColor = 100):
+        Drawframe = npimg
+
+        if imgcopy==False:
+            # Create black color image
+            height,width,depth = npimg.shape
+            blackFrame = np.zeros([height,width,3],dtype=np.uint8) 
+            blackFrame.fill(bgColor)
+            Drawframe = blackFrame
+
+        image_h, image_w = Drawframe.shape[:2]
         centers = {}
         for human in humans:
             # draw point
@@ -392,7 +399,7 @@ class TfPoseEstimator:
                 body_part = human.body_parts[i]
                 center = (int(body_part.x * image_w + 0.5), int(body_part.y * image_h + 0.5))
                 centers[i] = center
-                cv2.circle(npimg, center, 3, common.CocoColors[i], thickness=3, lineType=8, shift=0)
+                cv2.circle(Drawframe, center, 3, common.CocoColors[i], thickness=3, lineType=8, shift=0)
 
             # draw line
             for pair_order, pair in enumerate(common.CocoPairsRender):
@@ -400,9 +407,9 @@ class TfPoseEstimator:
                     continue
 
                 # npimg = cv2.line(npimg, centers[pair[0]], centers[pair[1]], common.CocoColors[pair_order], 3)
-                cv2.line(npimg, centers[pair[0]], centers[pair[1]], common.CocoColors[pair_order], 3)
+                cv2.line(Drawframe, centers[pair[0]], centers[pair[1]], common.CocoColors[pair_order], 3)
 
-        return npimg
+        return Drawframe
 
     def _get_scaled_img(self, npimg, scale):
         get_base_scale = lambda s, w, h: max(self.target_size[0] / float(h), self.target_size[1] / float(w)) * s
