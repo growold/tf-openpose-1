@@ -1,0 +1,11 @@
+python run_webcam.py --model=mobilenet_thin --resize=432x368 --camera=0
+python run.py --image=./images/p1.jpg
+
+RTSP 
+python run_rtsp.py --model=mobilenet_thin --resize=128x128 --rtsp="rtsp://192.168.1.3:554/user=admin&password=&channel=1&stream=0.sdp?real_stream”
+
+Android App:  RTSP SERVER
+python run_rtsp.py --model=mobilenet_thin --rtsp="rtsp://192.168.1.7:5540/ch0"
+
+
+python run_video.py --video=../VideoDataSet/04.mp4
